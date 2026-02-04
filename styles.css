@@ -67,5 +67,5 @@ body {
 /* Optional: ensure .buttons container doesn't clip the absolutely positioned button */
 .buttons {
   position: relative;
-  min-height: 60px; /* adjust as needed so the button has space to move */
+  min-height: 30px; /* adjust as needed so the button has space to move */
 }
