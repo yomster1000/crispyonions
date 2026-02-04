@@ -1,14 +1,47 @@
 // Simple handlers used by index.html buttons
 
+const noMessages = [
+  "Nope",
+  "Are you sure 😅",
+  "Maybe you miss clicked?",
+  "Not today!",
+  "Try again!",
+  "Come on...",
+];
+
+let lastNoIndex = -1;
+
 function handleYesClick() {
   // navigate to the yes page
   window.location.href = 'yes_page.html';
 }
 
 function handleNoClick() {
-  // playful behavior: move the No button to a random position
   const btn = document.querySelector('.no-button');
   if (!btn) return;
+
+  // Update the button text to a new random message (avoid repeating the same one)
+  if (noMessages.length > 0) {
+    let idx = Math.floor(Math.random() * noMessages.length);
+    if (idx === lastNoIndex) {
+      idx = (idx + 1) % noMessages.length;
+    }
+    btn.textContent = noMessages[idx];
+    lastNoIndex = idx;
+  }
+
+  // Trigger text-change animation: remove / force reflow / add so it restarts reliably
+  btn.classList.remove('animate-text');
+  // force reflow to restart animation
+  void btn.offsetWidth;
+  btn.classList.add('animate-text');
+
+  // cleanup after animation just in case
+  const onAnimEnd = () => {
+    btn.classList.remove('animate-text');
+    btn.removeEventListener('animationend', onAnimEnd);
+  };
+  btn.addEventListener('animationend', onAnimEnd);
 
   // Ensure the button can be absolutely positioned
   btn.style.position = 'absolute';
